@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block title %}403 Forbidden{% endblock %}
+
+{% block content %}
+    <h2>403 Forbidden</h2>
+    <p>이 작업을 수행할 권한이 없습니다.</p>
+    <a href="{{ url_for('comments') }}">댓글 목록으로 돌아가기</a>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}{% if edit %}댓글 수정{% else %}댓글 작성{% endif %}{% endblock %}
+
+{% block content %}
+    <h2>{% if edit %}댓글 수정{% else %}댓글 작성{% endif %}</h2>
+    <form method="post">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.content.label }}<br>
+            {{ form.content(rows=5, cols=40) }}
+        </p>
+        <p>{{ form.submit.label }}: 
+            {% if edit %}
+                {{ form.submit(value='수정') }}
+            {% else %}
+                {{ form.submit() }}
+            {% endif %}
+        </p>
+    </form>
+{% endblock %}
