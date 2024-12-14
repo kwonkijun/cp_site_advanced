@@ -7,14 +7,34 @@ from flask import current_app as app
 
 @app.route('/')
 def index():
-    return redirect(url_for('comments'))
+    return render_template('index.html')
+
+@app.route('/level1')
+def level1():
+    return render_template('level1.html')
+
+@app.route('/level1_detail')
+def level1_detail():
+    return render_template('/level1_detail.html')
+
+@app.route('/level2')
+def level2():
+    return render_template('level2.html')
+
+@app.route('/level3')
+def level3():
+    return render_template('level3.html')
+
+@app.route('/level4')
+def level4():
+    return render_template('level4.html')
 
 ## 회원가입
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if current_user.is_authenticated:
         return redirect(url_for('comments'))
-    
+        
     form = SignupForm()
     if form.validate_on_submit():
         user = User(username=form.username.data)

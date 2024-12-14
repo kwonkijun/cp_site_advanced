@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>startcoding 크롤링 심화편</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+  <!-- Favicons -->
+  <link href="{{ url_for('static', filename='assets/img/favicon.png') }}" rel="icon">
+  <link href="{{ url_for('static', filename='assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{{ url_for('static', filename='assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='assets/vendor/aos/aos.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="{{ url_for('static', filename='assets/css/main.css') }}" rel="stylesheet">
+</head>
+
+<body class="index-page">
+
+  <header id="header" class="header fixed-top">
+
+    <div class="topbar d-flex align-items-center">
+      <div class="container d-flex justify-content-center justify-content-md-between">
+        <div class="contact-info d-flex align-items-center">
+          <i class="bi bi-envelope d-flex align-items-center"><a
+              href="mailto:contact@example.com">kkj6360@naver.com</a></i>
+        </div>
+        <div class="social-links d-none d-md-flex align-items-center">
+          <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
+          <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+          <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+          <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+        </div>
+      </div>
+    </div><!-- End Top Bar -->
+
+    <div class="branding d-flex align-items-cente">
+
+      <div class="container position-relative d-flex align-items-center justify-content-between">
+        <a href="index.html" class="logo d-flex align-items-center">
+          <!-- Uncomment the line below if you also wish to use an image logo -->
+          <!-- <img src="{{ url_for('static', filename='assets/img/logo.png') }}" alt=""> -->
+          <h1 class="sitename">Crawling Advanced</h1>
+          <span>.</span>
+        </a>
+
+        <nav id="navmenu" class="navmenu">
+          <ul>
+            <li><a href="#hero" class="active">Home<br></a></li>
+            <li><a href="{{ url_for('level1') }}">Level1</a></li>
+            <li><a href="{{ url_for('level2') }}">Level2</a></li>
+            <li><a href="{{ url_for('level3') }}">Level3</a></li>
+            <li><a href="{{ url_for('level4') }}">Level4</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+          <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+        </nav>
+
+      </div>
+
+    </div>
+
+  </header>
+
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title">
+      <div class="heading">
+        <div class="container">
+          <div class="row d-flex justify-content-center text-center">
+            <div class="col-lg-8">
+              <h1>강남해서그랑블(주상복합) 1동</h1>
+              <h3 class="mb-0">매매 13억 (4098만원/3.3㎡)</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- End Page Title -->
+
+    <!-- Service Details Section -->
+    <section id="land-details" class="land-details section">
+
+      <div class="container">
+
+        <div class="row gy-4">
+
+          <div class="detail_tab col-lg-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="detail-list">
+              <a href="#" class="active">매물정보</a>
+              <a href="#">시세/실거래가</a>
+              <a href="#">동호수/공시가격</a>
+              <a href="#">부동산정보</a>
+              <a href="#">사진</a>
+            </div>
+          </div>
+
+          <div class="detail_box col-lg-8" data-aos="fade-up" data-aos-delay="200">
+            <div class="img_wrap">
+              <div class="floor_plan">
+                <span>기본형</span>
+                <img src="{{ url_for('static', filename='assets/img/land_list/land_detail-1-1.jpg')}}" alt="">
+              </div>
+              <div class="floor_plan">
+                <span>확장형</span>
+                <img src="{{ url_for('static', filename='assets/img/land_list/land_detail-1-2.jpg')}}" alt="">
+              </div>
+            </div>
+            <table class="table_wrap table">
+              <tbody>
+                <tr class="table_item_info">
+                  <th class="table_th" scope="row">매물특징</th>
+                  <td class="table_td" colspan="3">특올수리,주인직접, 빠른 입주, 양재강남역, 한티 근접</td>
+                </tr>
+                <tr class="table_item_info">
+                  <th class="table_th" scope="row">공급/전용면적</th>
+                  <td class="table_td" colspan="3">104.85㎡/78.57㎡ (전용률75%)</td>
+                </tr>
+                <tr class="table_item_info">
+                  <th class="table_th" scope="row">해당층/총층</th>
+                  <td class="table_td">6/10층</td>
+                  <th class="table_th" scope="row">방수/욕실수</th>
+                  <td class="table_td">3/2개</td>
+                </tr>
+                <tr class="table_item_info">
+                  <th class="table_th" scope="row">방향</th>
+                  <td class="table_td" colspan="3">남서향</td>
+                </tr>
+                <tr class="table_item_info">
+                  <th class="table_th" scope="row">매물설명</th>
+                  <td class="table_td" colspan="3">
+                    <span class="table_data_user">
+                      <pre>특올수리,주인직접, 빠른 입주, 양재/강남역, 한티 근접
+
+                        ◆주차대수 : 총113대(세대당1.7대)
+                        ◆층수 : 지상10층(지하4층)
+                        ◆사용승인일 : 2012/08/31
+                        ◆교통 : 역삼역이 도보14분거리며 걸어서 4분내에 여러버스정류 
+                        장이  있슴
+                        ◆학군 : 역삼초 도보로 9분, 연주초 12분 소요
+                        ◆주변에 고급 빌딩과 유명음식점, 카페들이 모여 있어 현대적인 
+                        분위기를 느낄수 있는 곳이며 밤만 되면 화려한 래이브 클럽과 
+                        바들이 줄서 있어 열정적인 핫플레이스 분위기를 볼수 있습니다.
+                        
+                        ◈ 관리비는 세대별, 계절별로 상이할 수 있으며, 매도인(임대인)이 관리비 내역을 미고지하여 세부내용을 알 수 없음
+                        
+                        ▷ 구글/앱 스토어에서 ＂우대빵＂을 검색해 보세요
+                        
+                        ▷ 계약시 10억 보증보험 보장!! 
+                        
+                        ◈ 아파트 매매/전,월세 전문 
+                        ◈ 2023년 아파트 매물 수, 손님 수 1등 
+                        ◈ 평균 거래기간 1개월 9일!
+                        ◈ 계약부터~세무 / 대출 / 변호사 상담까지 원스톱 서비스
+                        
+                        궁금하신점은 언제든 연락 주세요
+                        
+                        중개사 등록 번호 제 11440-2023-00074-001 호</pre>
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section><!-- /Service Details Section -->
+
+  </main>
+
+  <footer id="footer" class="footer accent-background">
+
+    <div class="container footer-top">
+      <div class="row gy-4">
+        <div class="col-lg-5 col-md-12 footer-about">
+          <a href="index.html" class="logo d-flex align-items-center">
+            <span class="sitename">Impact</span>
+          </a>
+          <p>Cras fermentum odio eu feugiat lide par naso tierra. Justo eget nada terra videa magna derita valies
+            darta
+            donna mare fermentum iaculis eu non diam phasellus.</p>
+          <div class="social-links d-flex mt-4">
+            <a href=""><i class="bi bi-twitter-x"></i></a>
+            <a href=""><i class="bi bi-facebook"></i></a>
+            <a href=""><i class="bi bi-instagram"></i></a>
+            <a href=""><i class="bi bi-linkedin"></i></a>
+          </div>
+        </div>
+
+        <div class="col-lg-2 col-6 footer-links">
+          <h4>Useful Links</h4>
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About us</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="#">Terms of service</a></li>
+            <li><a href="#">Privacy policy</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-2 col-6 footer-links">
+          <h4>Our Services</h4>
+          <ul>
+            <li><a href="#">Web Design</a></li>
+            <li><a href="#">Web Development</a></li>
+            <li><a href="#">Product Management</a></li>
+            <li><a href="#">Marketing</a></li>
+            <li><a href="#">Graphic Design</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
+          <h4>Contact Us</h4>
+          <p>A108 Adam Street</p>
+          <p>New York, NY 535022</p>
+          <p>United States</p>
+          <p class="mt-4"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
+          <p><strong>Email:</strong> <span>info@example.com</span></p>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="container copyright text-center mt-4">
+      <p>© <span>Copyright</span> <strong class="px-1 sitename">Impact</strong> <span>All Rights Reserved</span></p>
+      <div class="credits">
+        <!-- All the links in the footer should remain intact. -->
+        <!-- You can delete the links only if you've purchased the pro version. -->
+        <!-- Licensing information: https://bootstrapmade.com/license/ -->
+        <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
+        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+      </div>
+    </div>
+
+  </footer>
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="{{ url_for('static', filename='assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/vendor/php-email-form/validate.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/vendor/aos/aos.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/vendor/purecounter/purecounter_vanilla.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/vendor/imagesloaded/imagesloaded.pkgd.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/vendor/isotope-layout/isotope.pkgd.min.js') }}"></script>
+
+  <!-- Main JS File -->
+  <script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
+
+</body>
+
+</html>
