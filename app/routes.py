@@ -1,7 +1,7 @@
-from flask import render_template, redirect, url_for, flash, request, abort
+from flask import render_template, redirect, url_for, flash, request, abort, jsonify
 from flask_login import current_user, login_user, logout_user, login_required
 from . import db
-from .models import User, Comment
+from .models import User, Comment, RealEstate
 from .forms import SignupForm, LoginForm, CommentForm, DeleteForm
 from flask import current_app as app
 
@@ -11,11 +11,69 @@ def index():
 
 @app.route('/level1')
 def level1():
+    # 목록 페이지 템플릿
     return render_template('level1.html')
 
-@app.route('/level1_detail')
-def level1_detail():
-    return render_template('/level1_detail.html')
+@app.route('/api/articles')
+def api_articles():
+    page = int(request.args.get('page', 1))        # 기본값 1
+    pageSize = int(request.args.get('pageSize', 20))  # 기본값 20
+    
+    # 페이지 계산
+    offset = (page - 1) * pageSize
+    query = RealEstate.query.order_by(RealEstate.id.asc()).offset(offset).limit(pageSize).all()
+
+    data = []
+    for a in query:
+        data.append({
+            "article_no": a.article_no,
+            "article_name": a.article_name,
+            "article_deal_or_warrant_price": a.article_deal_or_warrant_price,
+            "article_type_name": a.article_type_name,
+            "article_area_name": a.article_area_name,
+            "article_area_size": a.article_area_size,
+            "article_floor": a.article_floor,
+            "article_direction": a.article_direction,
+            "article_desc": a.article_desc,
+            "article_expandable": a.article_expandable,
+            "article_detail_desc": a.article_detail_desc,
+            "article_deal_price": a.article_deal_price,
+            "article_price_by_space": a.article_price_by_space,
+            "article_realtor_name": a.article_realtor_name,
+            "article_realtor_address": a.article_realtor_address,
+            "article_supply_space": a.article_supply_space,
+            "article_exclusive_space": a.article_exclusive_space,
+            "article_exclusive_rate": a.article_exclusive_rate
+        })
+    return jsonify(data)
+
+@app.route('/level1/<article_no>')
+def level1_detail(article_no):
+    article = RealEstate.query.filter_by(article_no=article_no).first()
+    if not article:
+        return "Not Found", 404
+    article_data = {
+        "article_no": article.article_no,
+        "article_name": article.article_name,
+        "article_deal_or_warrant_price": article.article_deal_or_warrant_price,
+        "article_type_name": article.article_type_name,
+        "article_area_name": article.article_area_name,
+        "article_area_size": article.article_area_size,
+        "article_floor": article.article_floor,
+        "article_direction": article.article_direction,
+        "article_desc": article.article_desc,
+        "article_expandable": article.article_expandable,
+        "article_detail_desc": article.article_detail_desc,
+        "article_deal_price": article.article_deal_price,
+        "article_price_by_space": article.article_price_by_space,
+        "article_realtor_name": article.article_realtor_name,
+        "article_realtor_address": article.article_realtor_address,
+        "article_supply_space": article.article_supply_space,
+        "article_exclusive_space": article.article_exclusive_space,
+        "article_exclusive_rate": article.article_exclusive_rate
+    }
+
+    return render_template('level1_detail.html', article_data=article_data)
 
 @app.route('/level2')
 def level2():

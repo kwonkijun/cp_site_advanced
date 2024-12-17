@@ -1382,14 +1382,19 @@ section,
   background-color: var(--surface-color);
   box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
-  padding: 30px;
+  padding: 15px;
   margin: 30px 15px;
   position: relative;
   height: 100%;
+  border-radius: 5px;
 }
 
 .land_list .land-item .land-img {
   width: 100%;
+  height: 200px;
+  /* 원하는 높이로 조절 */
+  object-fit: cover;
+  /* 이미지 비율 유지 */
   margin-bottom: 15px;
 }
 
@@ -1429,6 +1434,15 @@ section,
 .land_list .land-item p {
   margin: 15px auto 15px auto;
 }
+
+.land_list .land-item .item_desc {
+  margin-top: 10px;
+}
+
+.land_list .land-item .item_desc i {
+  font-size: 20px;
+}
+
 
 .land_list .swiper-wrapper {
   height: auto;
