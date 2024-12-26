@@ -1,6 +1,8 @@
 from . import db, login
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime
+import pytz
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -22,7 +24,7 @@ class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(pytz.timezone('Asia/Seoul')))  # 한국 시간 기준
 
 class RealEstate(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)

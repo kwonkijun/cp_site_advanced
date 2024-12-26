@@ -1,0 +1,121 @@
+{% extends "main_base.html" %}
+{% block content %}
+
+<main class="main">
+
+  <!-- Page Title -->
+  <div class="page-title">
+    <div class="heading">
+      <div class="container">
+        <div class="row d-flex justify-content-center text-center">
+          <div class="col-lg-8">
+            <h1 id="article_name"></h1>
+            <h3 class="mb-0">매매 <span id="article_deal_or_warrant_price"></span> (<span
+                id="article_price_by_space"></span>만원/3.3㎡)</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!-- End Page Title -->
+
+  <!-- 상세페이지 -->
+  <section id="land-details" class="land-details section">
+    <div class="container">
+      <div class="row gy-4">
+        <div class="detail_tab col-lg-4">
+          <div class="detail-list">
+            <a href="#" class="active">매물정보</a>
+            <a href="#">시세/실거래가</a>
+            <a href="#">동호수/공시가격</a>
+            <a href="#">부동산정보</a>
+            <a href="#">사진</a>
+          </div>
+        </div>
+
+        <div class="detail_box col-lg-8">
+          <div class="img_wrap">
+
+            <!-- 기본형 표시 -->
+            <div class="floor_plan">
+              <span>기본형</span>
+              <img id="article_basic_img" src="" alt="">
+            </div>
+
+            <!-- expandable이 true일 때만 확장형 표시 -->
+            <div class="floor_plan" id="expanded_plan_wrap" style="display:none;">
+              <span>확장형</span>
+              <img id="article_expanded_img" src="" alt="">
+            </div>
+          </div>
+
+          <table class="table_wrap table">
+            <tbody>
+              <tr class="table_item_info">
+                <th class="table_th" scope="row">매물특징</th>
+                <td class="table_td" colspan="3" id="article_desc"></td>
+              </tr>
+              <tr class="table_item_info">
+                <th class="table_th" scope="row">공급/전용면적</th>
+                <td class="table_td" colspan="3" id="article_space_info"></td>
+              </tr>
+              <tr class="table_item_info">
+                <th class="table_th" scope="row">해당층/총층</th>
+                <td class="table_td" id="article_floor"></td>
+                <th class="table_th" scope="row">방수/욕실수</th>
+                <td class="table_td">추가정보필요시삽입</td>
+              </tr>
+              <tr class="table_item_info">
+                <th class="table_th" scope="row">방향</th>
+                <td class="table_td" colspan="3" id="article_direction"></td>
+              </tr>
+              <tr class="table_item_info">
+                <th class="table_th" scope="row">매물설명</th>
+                <td class="table_td" colspan="3">
+                  <span class="table_data_user">
+                    <pre id="article_detail_desc"></pre>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    window.__MSS__ = {
+      article: {
+        state: {{ article_data | tojson }}
+    }
+  };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const data = window.__MSS__.article.state;
+
+      // 기본형 이미지는 항상 표시
+      const basicImg = document.getElementById('article_basic_img');
+      basicImg.src = "{{ url_for('static', filename='assets/img/land_list/') }}" + data.article_no + "_basic.jpg";
+
+      // 확장형 여부
+      if (data.article_expandable === true) {
+        const expandedWrap = document.getElementById('expanded_plan_wrap');
+        expandedWrap.style.display = 'block';
+        const expandedImg = document.getElementById('article_expanded_img');
+        expandedImg.src = "{{ url_for('static', filename='assets/img/land_list/') }}" + data.article_no + "_expanded.jpg";
+      }
+
+      document.getElementById('article_name').textContent = data.article_name || '';
+      document.getElementById('article_deal_or_warrant_price').textContent = data.article_deal_or_warrant_price || '';
+      document.getElementById('article_price_by_space').textContent = data.article_price_by_space || '';
+      document.getElementById('article_desc').textContent = data.article_desc || '';
+      document.getElementById('article_space_info').textContent = data.article_supply_space + "㎡/" + data.article_exclusive_space + "㎡ (전용률" + data.article_exclusive_rate + "%)";
+      document.getElementById('article_floor').textContent = data.article_floor || '';
+      document.getElementById('article_direction').textContent = data.article_direction || '';
+      document.getElementById('article_detail_desc').textContent = data.article_detail_desc || '';
+    });
+  </script>
+
+</main>
+
+{% endblock %}

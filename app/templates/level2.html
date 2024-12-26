@@ -1,402 +1,337 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "main_base.html" %}
+{% block content %}
 
-<head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Blog - Impact Bootstrap Template</title>
-  <meta name="description" content="">
-  <meta name="keywords" content="">
+<main class="main">
 
-  <!-- Favicons -->
-  <link href="{{ url_for('static', filename='assets/img/favicon.png') }}" rel="icon">
-  <link href="{{ url_for('static', filename='assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
-
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com" rel="preconnect">
-  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-
-  <!-- Vendor CSS Files -->
-  <link href="{{ url_for('static', filename='assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-  <link href="{{ url_for('static', filename='assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
-  <link href="{{ url_for('static', filename='assets/vendor/aos/aos.css') }}" rel="stylesheet">
-  <link href="{{ url_for('static', filename='assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
-  <link href="{{ url_for('static', filename='assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
-
-  <!-- Main CSS File -->
-  <link href="{{ url_for('static', filename='assets/css/main.css') }}" rel="stylesheet">
-
-  <!-- =======================================================
-  * Template Name: Impact
-  * Template URL: https://bootstrapmade.com/impact-bootstrap-business-website-template/
-  * Updated: Aug 07 2024 with Bootstrap v5.3.3
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
-</head>
-
-<body class="blog-page">
-
-  <header id="header" class="header fixed-top">
-
-    <div class="topbar d-flex align-items-center">
-      <div class="container d-flex justify-content-center justify-content-md-between">
-        <div class="contact-info d-flex align-items-center">
-          <i class="bi bi-envelope d-flex align-items-center"><a href="mailto:contact@example.com">contact@example.com</a></i>
-          <i class="bi bi-phone d-flex align-items-center ms-4"><span>+1 5589 55488 55</span></i>
-        </div>
-        <div class="social-links d-none d-md-flex align-items-center">
-          <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
-          <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-          <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-          <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+  <!-- Page Title -->
+  <div class="page-title">
+    <div class="heading">
+      <div class="container">
+        <div class="row d-flex justify-content-center text-center">
+          <div class="col-lg-8">
+            <h1>LEVEL 2</h1>
+            <p class="mb-0">쿠키와 세션을 이용한 패킷스니핑</p>
+          </div>
         </div>
       </div>
-    </div><!-- End Top Bar -->
-
-    <div class="branding d-flex align-items-cente">
-
-      <div class="container position-relative d-flex align-items-center justify-content-between">
-        <a href="index.html" class="logo d-flex align-items-center">
-          <!-- Uncomment the line below if you also wish to use an image logo -->
-          <!-- <img src="{{ url_for('static', filename='assets/img/logo.png') }}" alt=""> -->
-          <h1 class="sitename">Impact</h1>
-          <span>.</span>
-        </a>
-
-        <nav id="navmenu" class="navmenu">
-          <ul>
-            <li><a href="#hero">Home<br></a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#portfolio">Portfolio</a></li>
-            <li><a href="#team">Team</a></li>
-            <li><a href="blog.html" class="active">Blog</a></li>
-            <li class="dropdown"><a href="#"><span>Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-              <ul>
-                <li><a href="#">Dropdown 1</a></li>
-                <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                  <ul>
-                    <li><a href="#">Deep Dropdown 1</a></li>
-                    <li><a href="#">Deep Dropdown 2</a></li>
-                    <li><a href="#">Deep Dropdown 3</a></li>
-                    <li><a href="#">Deep Dropdown 4</a></li>
-                    <li><a href="#">Deep Dropdown 5</a></li>
-                  </ul>
-                </li>
-                <li><a href="#">Dropdown 2</a></li>
-                <li><a href="#">Dropdown 3</a></li>
-                <li><a href="#">Dropdown 4</a></li>
-              </ul>
-            </li>
-            <li><a href="#contact">Contact</a></li>
-          </ul>
-          <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-        </nav>
-
-      </div>
-
     </div>
+    <nav class="breadcrumbs">
+      <div class="container">
+        <ol>
+          <li><a href="/">Home</a></li>
+          <li class="current">Blog Details</li>
+        </ol>
+        <ol>
+          {% if current_user.is_authenticated %}
+          <li>
+            <span class="navbar-text">안녕하세요, {{ current_user.username }}님!</span>
+          </li>
+          <li>
+            <a class="nav-link" href="{{ url_for('logout') }}">로그아웃</a>
+          </li>
+          {% else %}
+          <li>
+            <a class="nav-link" href="{{ url_for('login') }}">로그인</a>
+          </li>
+          <li>
+            <a class="nav-link" href="{{ url_for('signup') }}">회원가입</a>
+          </li>
+          {% endif %}
+        </ol>
+      </div>
+    </nav>
+  </div><!-- End Page Title -->
 
-  </header>
+  <div class="container">
+    <div class="row">
 
-  <main class="main">
+      <div class="col-lg-8">
 
-    <!-- Page Title -->
-    <div class="page-title">
-      <div class="heading">
-        <div class="container">
-          <div class="row d-flex justify-content-center text-center">
-            <div class="col-lg-8">
-              <h1>Blog</h1>
-              <p class="mb-0">Odio et unde deleniti. Deserunt numquam exercitationem. Officiis quo odio sint voluptas consequatur ut a odio voluptatem. Sit dolorum debitis veritatis natus dolores. Quasi ratione sint. Sit quaerat ipsum dolorem.</p>
+        <!-- Blog Details Section -->
+        <section id="blog-details" class="blog-details section">
+          <div class="container">
+
+            <article class="article">
+
+              <div class="post-img">
+                <img src="assets/img/blog/blog-1.jpg" alt="" class="img-fluid">
+              </div>
+
+              <h2 class="title">Dolorum optio tempore voluptas dignissimos cumque fuga qui quibusdam quia</h2>
+
+              <div class="meta-top">
+                <ul>
+                  <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a href="blog-details.html">John
+                      Doe</a></li>
+                  <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="blog-details.html"><time
+                        datetime="2020-01-01">Jan 1, 2022</time></a></li>
+                  <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i> <a href="blog-details.html">12
+                      Comments</a></li>
+                </ul>
+              </div><!-- End meta top -->
+
+              <div class="content">
+                <p>
+                  Similique neque nam consequuntur ad non maxime aliquam quas. Quibusdam animi praesentium. Aliquam et
+                  laboriosam eius aut nostrum quidem aliquid dicta.
+                  Et eveniet enim. Qui velit est ea dolorem doloremque deleniti aperiam unde soluta. Est cum et quod
+                  quos aut ut et sit sunt. Voluptate porro consequatur assumenda perferendis dolore.
+                </p>
+
+                <p>
+                  Sit repellat hic cupiditate hic ut nemo. Quis nihil sunt non reiciendis. Sequi in accusamus harum vel
+                  aspernatur. Excepturi numquam nihil cumque odio. Et voluptate cupiditate.
+                </p>
+
+                <blockquote>
+                  <p>
+                    Et vero doloremque tempore voluptatem ratione vel aut. Deleniti sunt animi aut. Aut eos aliquam
+                    doloribus minus autem quos.
+                  </p>
+                </blockquote>
+
+                <p>
+                  Sed quo laboriosam qui architecto. Occaecati repellendus omnis dicta inventore tempore provident
+                  voluptas mollitia aliquid. Id repellendus quia. Asperiores nihil magni dicta est suscipit
+                  perspiciatis. Voluptate ex rerum assumenda dolores nihil quaerat.
+                  Dolor porro tempora et quibusdam voluptas. Beatae aut at ad qui tempore corrupti velit quisquam rerum.
+                  Omnis dolorum exercitationem harum qui qui blanditiis neque.
+                  Iusto autem itaque. Repudiandae hic quae aspernatur ea neque qui. Architecto voluptatem magni. Vel
+                  magnam quod et tempora deleniti error rerum nihil tempora.
+                </p>
+
+                <h3>Et quae iure vel ut odit alias.</h3>
+                <p>
+                  Officiis animi maxime nulla quo et harum eum quis a. Sit hic in qui quos fugit ut rerum atque. Optio
+                  provident dolores atque voluptatem rem excepturi molestiae qui. Voluptatem laborum omnis ullam
+                  quibusdam perspiciatis nulla nostrum. Voluptatum est libero eum nesciunt aliquid qui.
+                  Quia et suscipit non sequi. Maxime sed odit. Beatae nesciunt nesciunt accusamus quia aut ratione
+                  aspernatur dolor. Sint harum eveniet dicta exercitationem minima. Exercitationem omnis asperiores
+                  natus aperiam dolor consequatur id ex sed. Quibusdam rerum dolores sint consequatur quidem ea.
+                  Beatae minima sunt libero soluta sapiente in rem assumenda. Et qui odit voluptatem. Cum quibusdam
+                  voluptatem voluptatem accusamus mollitia aut atque aut.
+                </p>
+                <img src="assets/img/blog/blog-inside-post.jpg" class="img-fluid" alt="">
+
+                <h3>Ut repellat blanditiis est dolore sunt dolorum quae.</h3>
+                <p>
+                  Rerum ea est assumenda pariatur quasi et quam. Facilis nam porro amet nostrum. In assumenda quia quae
+                  a id praesentium. Quos deleniti libero sed occaecati aut porro autem. Consectetur sed excepturi sint
+                  non placeat quia repellat incidunt labore. Autem facilis hic dolorum dolores vel.
+                  Consectetur quasi id et optio praesentium aut asperiores eaque aut. Explicabo omnis quibusdam esse. Ex
+                  libero illum iusto totam et ut aut blanditiis. Veritatis numquam ut illum ut a quam vitae.
+                </p>
+                <p>
+                  Alias quia non aliquid. Eos et ea velit. Voluptatem maxime enim omnis ipsa voluptas incidunt. Nulla
+                  sit eaque mollitia nisi asperiores est veniam.
+                </p>
+
+              </div><!-- End post content -->
+
+              <div class="meta-bottom">
+                <i class="bi bi-folder"></i>
+                <ul class="cats">
+                  <li><a href="#">Business</a></li>
+                </ul>
+
+                <i class="bi bi-tags"></i>
+                <ul class="tags">
+                  <li><a href="#">Creative</a></li>
+                  <li><a href="#">Tips</a></li>
+                  <li><a href="#">Marketing</a></li>
+                </ul>
+              </div><!-- End meta bottom -->
+
+            </article>
+
+          </div>
+        </section><!-- /Blog Details Section -->
+
+        <!-- Blog Author Section -->
+        <section id="blog-author" class="blog-author section">
+
+          <div class="container">
+            <div class="author-container d-flex align-items-center">
+              <img src="assets/img/blog/blog-author.jpg" class="rounded-circle flex-shrink-0" alt="">
+              <div>
+                <h4>StartCoding</h4>
+                <div class="social-links">
+                  <a href="https://x.com/#"><i class="bi bi-twitter-x"></i></a>
+                  <a href="https://facebook.com/#"><i class="bi bi-facebook"></i></a>
+                  <a href="https://instagram.com/#"><i class="biu bi-instagram"></i></a>
+                </div>
+                <p>
+                  스타트코딩입니다.
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </section><!-- /Blog Author Section -->
+
+        <!-- Blog Comments Section -->
+        <section id="blog-comments" class="blog-comments section">
+
+          <div class="container">
+            <h4 class="comments-count">{{ comments.total }} Comments</h4>
+
+            {% for comment in comments.items %}
+            <div id="comment-{{ comment.id }}" class="comment">
+              <div class="d-flex">
+                <div class="comment-img">
+                  <span></span>
+                </div>
+                <div>
+                  <h5 class="comment-name">{{ comment.author.username }}</h5>
+                  {% if current_user.is_authenticated and comment.author == current_user %}
+                  <div class="comment-btns">
+                    <a href="#" class="edit" data-comment-id="{{ comment.id }}"
+                      data-comment-content="{{ comment.content }}">
+                      <i class="fa-solid fa-pen"></i>
+                    </a>
+                    <form action="{{ url_for('delete_comment', comment_id=comment.id) }}?page={{ comments.page }}"
+                      method="POST" style="display:inline;">
+                      {{ delete_form.hidden_tag() }}
+                      <button type="submit" class="delete btn-icon-only"
+                        onclick="return confirm('정말로 이 댓글을 삭제하시겠습니까?');">
+                        <i class="fa-solid fa-xmark"></i>
+                      </button>
+                    </form>
+                  </div>
+                  {% endif %}
+                  <time class="comment-date">{{ comment.created_at.strftime('%Y.%m.%d %H:%M') }}</time>
+                  <p class="comment-text">{{ comment.content }}</p>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+
+            <nav aria-label="Page navigation">
+              <ul class="pagination">
+                {% if comments.has_prev %}
+                <li class="page-item">
+                  <a class="page-link" href="{{ url_for('level2', page=comments.prev_num) }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+                {% endif %}
+                {% for page_num in comments.iter_pages() %}
+                <li class="page-item {% if page_num == comments.page %}active{% endif %}">
+                  <a class="page-link" href="{{ url_for('level2', page=page_num) }}">{{ page_num }}</a>
+                </li>
+                {% endfor %}
+                {% if comments.has_next %}
+                <li class="page-item">
+                  <a class="page-link" href="{{ url_for('level2', page=comments.next_num) }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+                {% endif %}
+              </ul>
+            </nav>
+          </div>
+
+        </section><!-- /Blog Comments Section -->
+
+        <!-- Comment Form Section -->
+        <section id="comment-form" class="comment-form section">
+          <div class="container">
+            {% if current_user.is_authenticated %}
+            <form id="new-comment-form" action="{{ url_for('new_comment') }}" method="POST">
+              <h4>댓글 작성</h4>
+              <div class="row">
+                <div class="col form-group">
+                  {{ form.content(class="form-control", rows="3") }}
+                </div>
+              </div>
+
+              <div class="text-center">
+                {{ form.submit(class="btn btn-primary mt-2") }}
+              </div>
+            </form>
+            {% else %}
+            <form id="new-comment-form" action="#" method="POST">
+              <h4>댓글 작성</h4>
+              <div class="row">
+                <div class="col form-group">
+                  <textarea name="comment" class="form-control clickable-textarea" placeholder="댓글을 작성하려면 로그인을 해주세요"
+                    onclick="redirectToLogin()" readonly></textarea>
+                </div>
+              </div>
+            </form>
+            {% endif %}
+          </div>
+        </section>
+
+        <!-- Edit Comment Modal -->
+        <div id="edit-comment-modal" class="modal fade" tabindex="-1">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <form method="POST" id="edit-comment-form" action="">
+                {{ edit_form.hidden_tag() }}
+                <div class="modal-header">
+                  <h5 class="modal-title">댓글 수정</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  {{ edit_form.content(class="form-control", id="edit-comment-content") }}
+                </div>
+                <div class="modal-footer">
+                  {{ edit_form.submit(class="btn btn-primary") }}
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
-      </div>
-      <nav class="breadcrumbs">
-        <div class="container">
-          <ol>
-            <li><a href="index.html">Home</a></li>
-            <li class="current">Blog</li>
-          </ol>
-        </div>
-      </nav>
-    </div><!-- End Page Title -->
 
-    <!-- Blog Posts Section -->
-    <section id="blog-posts" class="blog-posts section">
+        <script>
+          document.addEventListener('DOMContentLoaded', () => {
+            const editButtons = document.querySelectorAll('.edit');
+            const editCommentForm = document.getElementById('edit-comment-form');
+            const editCommentContent = document.getElementById('edit-comment-content');
 
-      <div class="container">
-        <div class="row gy-4">
+            editButtons.forEach(btn => {
+              btn.addEventListener('click', event => {
+                event.preventDefault();
 
-          <div class="col-lg-4">
-            <article>
+                const commentId = btn.getAttribute('data-comment-id');
+                const commentContent = btn.getAttribute('data-comment-content');
+                const currentPage = new URLSearchParams(window.location.search).get('page') || 1;
 
-              <div class="post-img">
-                <img src="{{ url_for('static', filename='assets/img/blog/blog-1.jpg') }}" alt="" class="img-fluid">
-              </div>
+                console.log(`Comment ID: ${commentId}, Content: ${commentContent}, Page: ${currentPage}`); // Debug log
 
-              <p class="post-category">Politics</p>
+                // Set the form action with comment_id and page
+                editCommentForm.action = `/level2/comment/${commentId}/edit?page=${currentPage}`;
+                // Set the textarea value
+                editCommentContent.value = commentContent;
 
-              <h2 class="title">
-                <a href="blog-details.html">Dolorum optio tempore voluptas dignissimos</a>
-              </h2>
+                // Show the modal
+                const modal = new bootstrap.Modal(document.getElementById('edit-comment-modal'));
+                modal.show();
+              });
+            });
 
-              <div class="d-flex align-items-center">
-                <img src="{{ url_for('static', filename='assets/img/blog/blog-author.jpg') }}" alt="" class="img-fluid post-author-img flex-shrink-0">
-                <div class="post-meta">
-                  <p class="post-author">Maria Doe</p>
-                  <p class="post-date">
-                    <time datetime="2022-01-01">Jan 1, 2022</time>
-                  </p>
-                </div>
-              </div>
+            // 클라이언트 측 댓글 수정 폼 유효성 검사
+            editCommentForm.addEventListener('submit', (event) => {
+              const content = editCommentContent.value.trim();
+              if (!content) {
+                event.preventDefault();
+                alert('댓글 내용을 입력해주세요.');
+              }
+            });
+          });
 
-            </article>
-          </div><!-- End post list item -->
-
-          <div class="col-lg-4">
-            <article>
-
-              <div class="post-img">
-                <img src="{{ url_for('static', filename='assets/img/blog/blog-2.jpg') }}" alt="" class="img-fluid">
-              </div>
-
-              <p class="post-category">Sports</p>
-
-              <h2 class="title">
-                <a href="blog-details.html">Nisi magni odit consequatur autem nulla dolorem</a>
-              </h2>
-
-              <div class="d-flex align-items-center">
-                <img src="{{ url_for('static', filename='assets/img/blog/blog-author-2.jpg') }}" alt="" class="img-fluid post-author-img flex-shrink-0">
-                <div class="post-meta">
-                  <p class="post-author">Allisa Mayer</p>
-                  <p class="post-date">
-                    <time datetime="2022-01-01">Jun 5, 2022</time>
-                  </p>
-                </div>
-              </div>
-
-            </article>
-          </div><!-- End post list item -->
-
-          <div class="col-lg-4">
-            <article>
-
-              <div class="post-img">
-                <img src="{{ url_for('static', filename='assets/img/blog/blog-3.jpg') }}" alt="" class="img-fluid">
-              </div>
-
-              <p class="post-category">Entertainment</p>
-
-              <h2 class="title">
-                <a href="blog-details.html">Possimus soluta ut id suscipit ea ut in quo quia et soluta</a>
-              </h2>
-
-              <div class="d-flex align-items-center">
-                <img src="{{ url_for('static', filename='assets/img/blog/blog-author-3.jpg') }}" alt="" class="img-fluid post-author-img flex-shrink-0">
-                <div class="post-meta">
-                  <p class="post-author">Mark Dower</p>
-                  <p class="post-date">
-                    <time datetime="2022-01-01">Jun 22, 2022</time>
-                  </p>
-                </div>
-              </div>
-
-            </article>
-          </div><!-- End post list item -->
-
-          <div class="col-lg-4">
-            <article>
-
-              <div class="post-img">
-                <img src="{{ url_for('static', filename='assets/img/blog/blog-4.jpg') }}" alt="" class="img-fluid">
-              </div>
-
-              <p class="post-category">Sports</p>
-
-              <h2 class="title">
-                <a href="blog-details.html">Non rem rerum nam cum quo minus olor distincti</a>
-              </h2>
-
-              <div class="d-flex align-items-center">
-                <img src="{{ url_for('static', filename='assets/img/blog/blog-author-4.jpg') }}" alt="" class="img-fluid post-author-img flex-shrink-0">
-                <div class="post-meta">
-                  <p class="post-author">Lisa Neymar</p>
-                  <p class="post-date">
-                    <time datetime="2022-01-01">Jun 30, 2022</time>
-                  </p>
-                </div>
-              </div>
-
-            </article>
-          </div><!-- End post list item -->
-
-          <div class="col-lg-4">
-            <article>
-
-              <div class="post-img">
-                <img src="{{ url_for('static', filename='assets/img/blog/blog-5.jpg') }}" alt="" class="img-fluid">
-              </div>
-
-              <p class="post-category">Politics</p>
-
-              <h2 class="title">
-                <a href="blog-details.html">Accusamus quaerat aliquam qui debitis facilis consequatur</a>
-              </h2>
-
-              <div class="d-flex align-items-center">
-                <img src="{{ url_for('static', filename='assets/img/blog/blog-author-5.jpg') }}" alt="" class="img-fluid post-author-img flex-shrink-0">
-                <div class="post-meta">
-                  <p class="post-author">Denis Peterson</p>
-                  <p class="post-date">
-                    <time datetime="2022-01-01">Jan 30, 2022</time>
-                  </p>
-                </div>
-              </div>
-
-            </article>
-          </div><!-- End post list item -->
-
-          <div class="col-lg-4">
-            <article>
-
-              <div class="post-img">
-                <img src="{{ url_for('static', filename='assets/img/blog/blog-6.jpg') }}" alt="" class="img-fluid">
-              </div>
-
-              <p class="post-category">Entertainment</p>
-
-              <h2 class="title">
-                <a href="blog-details.html">Distinctio provident quibusdam numquam aperiam aut</a>
-              </h2>
-
-              <div class="d-flex align-items-center">
-                <img src="{{ url_for('static', filename='assets/img/blog/blog-author-6.jpg') }}" alt="" class="img-fluid post-author-img flex-shrink-0">
-                <div class="post-meta">
-                  <p class="post-author">Mika Lendon</p>
-                  <p class="post-date">
-                    <time datetime="2022-01-01">Feb 14, 2022</time>
-                  </p>
-                </div>
-              </div>
-
-            </article>
-          </div><!-- End post list item -->
-
-        </div>
-      </div>
-
-    </section><!-- /Blog Posts Section -->
-
-    <!-- Blog Pagination Section -->
-    <section id="blog-pagination" class="blog-pagination section">
-
-      <div class="container">
-        <div class="d-flex justify-content-center">
-          <ul>
-            <li><a href="#"><i class="bi bi-chevron-left"></i></a></li>
-            <li><a href="#">1</a></li>
-            <li><a href="#" class="active">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li>...</li>
-            <li><a href="#">10</a></li>
-            <li><a href="#"><i class="bi bi-chevron-right"></i></a></li>
-          </ul>
-        </div>
-      </div>
-
-    </section><!-- /Blog Pagination Section -->
-
-  </main>
-
-  <footer id="footer" class="footer accent-background">
-
-    <div class="container footer-top">
-      <div class="row gy-4">
-        <div class="col-lg-5 col-md-12 footer-about">
-          <a href="index.html" class="logo d-flex align-items-center">
-            <span class="sitename">Impact</span>
-          </a>
-          <p>Cras fermentum odio eu feugiat lide par naso tierra. Justo eget nada terra videa magna derita valies darta donna mare fermentum iaculis eu non diam phasellus.</p>
-          <div class="social-links d-flex mt-4">
-            <a href=""><i class="bi bi-twitter-x"></i></a>
-            <a href=""><i class="bi bi-facebook"></i></a>
-            <a href=""><i class="bi bi-instagram"></i></a>
-            <a href=""><i class="bi bi-linkedin"></i></a>
-          </div>
-        </div>
-
-        <div class="col-lg-2 col-6 footer-links">
-          <h4>Useful Links</h4>
-          <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">About us</a></li>
-            <li><a href="#">Services</a></li>
-            <li><a href="#">Terms of service</a></li>
-            <li><a href="#">Privacy policy</a></li>
-          </ul>
-        </div>
-
-        <div class="col-lg-2 col-6 footer-links">
-          <h4>Our Services</h4>
-          <ul>
-            <li><a href="#">Web Design</a></li>
-            <li><a href="#">Web Development</a></li>
-            <li><a href="#">Product Management</a></li>
-            <li><a href="#">Marketing</a></li>
-            <li><a href="#">Graphic Design</a></li>
-          </ul>
-        </div>
-
-        <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
-          <h4>Contact Us</h4>
-          <p>A108 Adam Street</p>
-          <p>New York, NY 535022</p>
-          <p>United States</p>
-          <p class="mt-4"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
-          <p><strong>Email:</strong> <span>info@example.com</span></p>
-        </div>
+          function redirectToLogin() {
+            window.location.href = "{{ url_for('login') }}";
+          }
+        </script>
 
       </div>
+
     </div>
+  </div>
 
-    <div class="container copyright text-center mt-4">
-      <p>© <span>Copyright</span> <strong class="px-1 sitename">Impact</strong> <span>All Rights Reserved</span></p>
-      <div class="credits">
-        <!-- All the links in the footer should remain intact. -->
-        <!-- You can delete the links only if you've purchased the pro version. -->
-        <!-- Licensing information: https://bootstrapmade.com/license/ -->
-        <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
-        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-      </div>
-    </div>
+</main>
 
-  </footer>
-
-  <!-- Scroll Top -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-
-  <!-- Preloader -->
-  <div id="preloader"></div>
-
-  <!-- Vendor JS Files -->
-  <script src="{{ url_for('static', filename='assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-  <script src="{{ url_for('static', filename='assets/vendor/php-email-form/validate.js') }}"></script>
-  <script src="{{ url_for('static', filename='assets/vendor/aos/aos.js') }}"></script>
-  <script src="{{ url_for('static', filename='assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
-  <script src="{{ url_for('static', filename='assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
-  <script src="{{ url_for('static', filename='assets/vendor/purecounter/purecounter_vanilla.js') }}"></script>
-  <script src="{{ url_for('static', filename='assets/vendor/imagesloaded/imagesloaded.pkgd.min.js') }}"></script>
-  <script src="{{ url_for('static', filename='assets/vendor/isotope-layout/isotope.pkgd.min.js') }}"></script>
-
-  <!-- Main JS File -->
-  <script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
-
-</body>
-
-</html>
+{% endblock %}

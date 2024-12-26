@@ -598,7 +598,7 @@ h6 {
   color: var(--default-color);
   background-color: var(--background-color);
   font-size: 14px;
-  position: relative;
+  padding-top: 150px;
 }
 
 .footer .footer-top {
@@ -821,6 +821,12 @@ h6 {
   padding: 20px 0;
 }
 
+.page-title nav div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .page-title nav ol {
   display: flex;
   flex-wrap: wrap;
@@ -843,7 +849,6 @@ h6 {
 }
 
 .page-title nav ol li+li::before {
-  content: "/";
   display: inline-block;
   padding-right: 10px;
   color: color-mix(in srgb, var(--default-color), transparent 50%);
@@ -1368,6 +1373,8 @@ section,
 /*--------------------------------------------------------------
 # land_list Section
 --------------------------------------------------------------*/
+
+
 .land_list_container {
   display: flex;
   flex-wrap: wrap;
@@ -1383,10 +1390,10 @@ section,
   box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
   padding: 15px;
-  margin: 30px 15px;
+  margin: 30px 10px;
   position: relative;
   height: 100%;
-  border-radius: 5px;
+  border-radius: 3px;
 }
 
 .land_list .land-item .land-img {
@@ -2590,38 +2597,44 @@ section,
 .blog-comments .comment {
   margin-top: 30px;
   position: relative;
+  border-bottom: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
 }
 
 .blog-comments .comment .comment-img {
   margin-right: 14px;
 }
 
-.blog-comments .comment .comment-img img {
-  width: 60px;
+.blog-comments .comment .comment-img span {
+  display: block;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #008374;
 }
 
-.blog-comments .comment h5 {
+.blog-comments .comment .comment-name {
   font-size: 16px;
   margin-bottom: 2px;
 }
 
-.blog-comments .comment h5 a {
+.blog-comments .comment .comment-name a {
   font-weight: bold;
   color: var(--default-color);
   transition: 0.3s;
 }
 
-.blog-comments .comment h5 a:hover {
+.blog-comments .comment .comment-name a:hover {
   color: var(--accent-color);
 }
 
-.blog-comments .comment h5 .reply {
-  padding-left: 10px;
-  color: color-mix(in srgb, var(--default-color), transparent 20%);
+.blog-comments .comment .comment-btns {
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 
-.blog-comments .comment h5 .reply i {
-  font-size: 20px;
+.blog-comments .comment .comment-btns a {
+  margin: 0 10px;
 }
 
 .blog-comments .comment time {
@@ -2634,6 +2647,45 @@ section,
 .blog-comments .comment.comment-reply {
   padding-left: 40px;
 }
+
+.blog-comments nav {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+}
+
+/* 페이지네이션 링크의 기본 색상 및 테두리 설정 */
+.pagination .page-link {
+  color: #008374;
+  border-color: #008374;
+}
+
+/* 페이지네이션 링크 호버 시 색상 변경 */
+.pagination .page-link:hover {
+  background-color: #008374;
+  color: #ffffff;
+  border-color: #008374;
+}
+
+/* 활성화된 페이지 링크 색상 설정 */
+.pagination .page-item.active .page-link {
+  background-color: #008374;
+  border-color: #008374;
+  color: #ffffff;
+}
+
+/* 비활성화된 페이지 링크 색상 설정 */
+.pagination .page-item.disabled .page-link {
+  color: #6c757d;
+  /* 텍스트 색상 */
+  pointer-events: none;
+  /* 클릭 불가 */
+  background-color: transparent;
+  /* 배경색 */
+  border-color: transparent;
+  /* 테두리 색상 */
+}
+
 
 /*--------------------------------------------------------------
 # Comment Form Section
@@ -2697,6 +2749,11 @@ section,
 
 .comment-form form textarea::placeholder {
   color: color-mix(in srgb, var(--default-color), transparent 50%);
+}
+
+.comment-form form .clickable-textarea {
+  cursor: pointer;
+  background-color: #f8f9fa;
 }
 
 .comment-form form .form-group {
@@ -2890,4 +2947,36 @@ section,
   padding-left: 5px;
   color: color-mix(in srgb, var(--default-color), transparent 60%);
   font-size: 14px;
+}
+
+.signup_container,
+.login_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+  top: 150px;
+  width: 100%;
+}
+
+
+.signup_container .signup_form,
+.login_container .login_form {
+  width: 350px;
+  background-color: var(--surface-color);
+  box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  padding: 30px;
+  margin: 30px 15px;
+  height: 100%;
+  border-radius: 5px;
+}
+
+.btn-icon-only {
+  all: unset;
+  /* 모든 기본 스타일 제거 */
+  cursor: pointer;
+  /* 클릭 가능한 커서 */
+  display: inline-block;
 }

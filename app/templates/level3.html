@@ -1,0 +1,168 @@
+{% extends "main_base.html" %}
+{% block content %}
+
+<main class="main">
+
+  <!-- Hero Section -->
+  <section id="hero" class="hero section accent-background">
+
+    <div class="container position-relative" data-aos="fade-up" data-aos-delay="100">
+      <div class="row gy-5 justify-content-between">
+        <div class="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center">
+          <h2><span>Level </span><span class="accent">3</span></h2>
+          <p>봇탐지 회피 전략</p>
+          <div class="d-flex">
+            <a href="#about" class="btn-get-started">Get Started</a>
+            <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8"
+              class="glightbox btn-watch-video d-flex align-items-center"><i class="bi bi-play-circle"></i><span>Watch
+                Video</span></a>
+          </div>
+        </div>
+        <div class="col-lg-5 order-1 order-lg-2">
+          <img src="{{ url_for('static', filename='assets/img/hero-img.svg') }}" class="img-fluid" alt="">
+        </div>
+      </div>
+    </div>
+
+    <div class="icon-boxes position-relative" data-aos="fade-up" data-aos-delay="200">
+      <div class="container position-relative">
+        <div class="row gy-4 mt-5">
+
+          <div class="col-xl-3 col-md-6">
+            <div class="icon-box">
+              <div class="icon"><i class="bi bi-easel"></i></div>
+              <h4 class="title"><a href="{{ url_for('level1') }}" class="stretched-link">Level1</a></h4>
+            </div>
+          </div><!--End Icon Box -->
+
+          <div class="col-xl-3 col-md-6">
+            <div class="icon-box">
+              <div class="icon"><i class="bi bi-gem"></i></div>
+              <h4 class="title"><a href="{{ url_for('level2') }}" class="stretched-link">Level2</a></h4>
+            </div>
+          </div><!--End Icon Box -->
+
+          <div class="col-xl-3 col-md-6">
+            <div class="icon-box">
+              <div class="icon"><i class="bi bi-geo-alt"></i></div>
+              <h4 class="title"><a href="{{ url_for('level3') }}" class="stretched-link">Level3</a></h4>
+            </div>
+          </div><!--End Icon Box -->
+
+          <div class="col-xl-3 col-md-6">
+            <div class="icon-box">
+              <div class="icon"><i class="bi bi-command"></i></div>
+              <h4 class="title"><a href="{{ url_for('level4') }}" class="stretched-link">Level4</a></h4>
+            </div>
+          </div><!--End Icon Box -->
+
+        </div>
+      </div>
+    </div>
+
+  </section><!-- /Hero Section -->
+
+  <!-- land_list Section -->
+  <section id="land_list" class="land_list section dark-background">
+
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+      <h2>부동산 매물 목록</h2>
+    </div><!-- End Section Title -->
+
+
+    <div id="land-list-container" class="container land_list_container" data-aos="fade-up" data-aos-delay="100"></div>
+
+    <script>
+      // 백엔드에서 세션에 저장된 js_token을 HTML로 전달받음
+      // {{ session['js_token'] }} 식으로 접근 가능
+      const token = "{{ session['js_token'] }}";
+      let page = 1;
+      let pageSize = 20;
+      let loading = false;
+
+      document.addEventListener('DOMContentLoaded', () => {
+        loadArticles();
+      });
+
+      window.addEventListener('scroll', () => {
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 200) {
+          loadArticles();
+        }
+      });
+
+      function loadArticles() {
+        if (loading) return;
+        loading = true;
+
+        // 자바스크립트 검증(5번)에 의해, token 파라미터 꼭 포함
+        // User-Agent, Referer는 브라우저가 자동으로 보내주므로 여기서는 따로 처리할 필요 없음
+        fetch(`/protected_api/articles?page=${page}&pageSize=${pageSize}&token=${token}`)
+          .then(res => {
+            if (!res.ok) {
+              throw new Error(`Request failed with status ${res.status}`);
+            }
+            return res.json();
+          })
+          .then(data => {
+            appendArticles(data);
+            if (data.length > 0) {
+              page += 1;
+            }
+            loading = false;
+          })
+          .catch(err => {
+            console.error(err);
+            loading = false;
+          });
+      }
+
+      function appendArticles(articles) {
+        const container = document.getElementById('land-list-container');
+        articles.forEach(article => {
+          const div = document.createElement('div');
+          div.classList.add('land-item');
+          div.setAttribute('data-aos', 'fade-up');
+          div.setAttribute('data-aos-delay', '50');
+
+          const descContent = article.article_desc
+            ? `<i class="bi bi-quote quote-icon-left"></i>
+               <span>${article.article_desc}</span>
+               <i class="bi bi-quote quote-icon-right"></i>`
+            : '';
+
+          div.innerHTML = `
+            <a href="/level3/${article.article_no}">
+              <img src="${getThumbImageUrl(article.article_no)}" class="land-img" alt="">
+              <div class="item_title">
+                <span class="text">${article.article_name}</span>
+              </div>
+            </a>
+            <div class="item_price">
+              <span class="type">매매</span>
+              <span class="price">${article.article_deal_or_warrant_price}</span>
+            </div>
+            <div class="item_info">
+              <strong class="type">${article.article_type_name}</strong>
+              <span class="spec">
+                ${article.article_area_name}/${article.article_area_size}㎡, ${article.article_floor}, ${article.article_direction}
+              </span>
+            </div>
+            <div class="item_desc">
+              ${descContent}
+            </div>
+          `;
+          container.appendChild(div);
+        });
+      }
+
+      function getThumbImageUrl(article_no) {
+        return "{{ url_for('static', filename='assets/img/land_list') }}" + "/" + article_no + "_thumb.jpg";
+      }
+    </script>
+
+  </section><!-- /land_list Section -->
+
+</main>
+
+{% endblock %}

@@ -19,9 +19,37 @@ class LoginForm(FlaskForm):
     password = PasswordField('비밀번호', validators=[DataRequired()])
     submit = SubmitField('로그인')
 
+# forms.py
+
+from flask_wtf import FlaskForm
+from wtforms import TextAreaField, SubmitField
+from wtforms.validators import DataRequired, Length
+
 class CommentForm(FlaskForm):
-    content = TextAreaField('댓글 내용', validators=[DataRequired()])
-    submit = SubmitField('작성')
+    class Meta:
+        csrf = False  # CSRF 보호 비활성화
+        
+    content = TextAreaField(
+        '댓글',
+        validators=[
+            DataRequired(message='댓글 내용을 입력해주세요.'),
+            Length(min=1, max=1000, message='댓글은 1자 이상, 1000자 이하로 입력해주세요.')
+        ],
+        render_kw={"placeholder": "댓글을 입력하세요"}
+    )
+    submit = SubmitField('등록하기')
+
+class EditCommentForm(FlaskForm):
+    content = TextAreaField(
+        '댓글 수정',
+        validators=[
+            DataRequired(message='댓글 내용을 입력해주세요.'),
+            Length(min=1, max=1000, message='댓글은 1자 이상, 1000자 이하로 입력해주세요.')
+        ],
+        render_kw={"placeholder": "댓글을 수정하세요"}
+    )
+    submit = SubmitField('수정')
 
 class DeleteForm(FlaskForm):
-    pass
+    submit = SubmitField('삭제')
+
