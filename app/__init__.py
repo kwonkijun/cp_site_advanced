@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from instance.config import Config
 import json
+from datetime import timedelta
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -13,6 +14,7 @@ login.login_view = 'login'  # 로그인 필요 시 리다이렉트할 엔드포�
 def create_app():
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(Config)
+    app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=1)
 
     db.init_app(app)
     migrate.init_app(app, db)

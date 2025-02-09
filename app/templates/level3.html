@@ -74,9 +74,23 @@
     <div id="land-list-container" class="container land_list_container" data-aos="fade-up" data-aos-delay="100"></div>
 
     <script>
-      // 백엔드에서 세션에 저장된 js_token을 HTML로 전달받음
-      // {{ session['js_token'] }} 식으로 접근 가능
-      const token = "{{ session['js_token'] }}";
+      // JavaScript가 실행되었음을 서버에 알리는 요청
+      fetch('/set_js_enabled', {
+        method: 'POST',
+        credentials: 'same-origin',  // 쿠키를 함께 전송
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({})
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log('JS enabled:', data.status);
+        })
+        .catch(err => {
+          console.error('Failed to set JS enabled:', err);
+        });
+
       let page = 1;
       let pageSize = 20;
       let loading = false;
@@ -94,13 +108,12 @@
       function loadArticles() {
         if (loading) return;
         loading = true;
-
-        // 자바스크립트 검증(5번)에 의해, token 파라미터 꼭 포함
-        // User-Agent, Referer는 브라우저가 자동으로 보내주므로 여기서는 따로 처리할 필요 없음
-        fetch(`/protected_api/articles?page=${page}&pageSize=${pageSize}&token=${token}`)
+        fetch(`/protected_api/articles?page=${page}&pageSize=${pageSize}`, {
+          credentials: 'same-origin'  // 쿠키를 함께 전송
+        })
           .then(res => {
             if (!res.ok) {
-              throw new Error(`Request failed with status ${res.status}`);
+              throw new Error('봇 탐지에 의해 요청이 거부되었습니다.');
             }
             return res.json();
           })
@@ -125,6 +138,7 @@
           div.setAttribute('data-aos', 'fade-up');
           div.setAttribute('data-aos-delay', '50');
 
+          /* 매물 설명 */
           const descContent = article.article_desc
             ? `<i class="bi bi-quote quote-icon-left"></i>
                <span>${article.article_desc}</span>
@@ -144,9 +158,7 @@
             </div>
             <div class="item_info">
               <strong class="type">${article.article_type_name}</strong>
-              <span class="spec">
-                ${article.article_area_name}/${article.article_area_size}㎡, ${article.article_floor}, ${article.article_direction}
-              </span>
+              <span class="spec">${article.article_area_name}/${article.article_area_size}㎡, ${article.article_floor}, ${article.article_direction}</span>
             </div>
             <div class="item_desc">
               ${descContent}

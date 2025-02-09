@@ -1,12 +1,14 @@
 # routes.py
-import secrets
-import hashlib
+import json
 from flask import render_template, redirect, url_for, flash, request, abort, jsonify, session
 from flask_login import current_user, login_user, logout_user, login_required
 from . import db
 from .models import User, Comment, RealEstate
 from .forms import SignupForm, LoginForm, CommentForm, EditCommentForm, DeleteForm
 from flask import current_app as app
+from flask import Response
+from markupsafe import Markup
+
 
 @app.route('/')
 def index():
@@ -37,18 +39,11 @@ def api_articles():
             "article_area_size": a.article_area_size,
             "article_floor": a.article_floor,
             "article_direction": a.article_direction,
-            "article_desc": a.article_desc,
-            "article_expandable": a.article_expandable,
-            "article_detail_desc": a.article_detail_desc,
-            "article_deal_price": a.article_deal_price,
-            "article_price_by_space": a.article_price_by_space,
-            "article_realtor_name": a.article_realtor_name,
-            "article_realtor_address": a.article_realtor_address,
-            "article_supply_space": a.article_supply_space,
-            "article_exclusive_space": a.article_exclusive_space,
-            "article_exclusive_rate": a.article_exclusive_rate
+            "article_desc": a.article_desc
         })
-    return jsonify(data)
+
+    json_str = json.dumps(data, ensure_ascii=False)
+    return Response(json_str, content_type='application/json')
 
 @app.route('/level1/<article_no>')
 def level1_detail(article_no):
@@ -76,7 +71,9 @@ def level1_detail(article_no):
         "article_exclusive_rate": article.article_exclusive_rate
     }
 
-    return render_template('level1_detail.html', article_data=article_data)
+    # ensure_ascii=False 옵션을 사용하여 한글이 그대로 나오도록 함
+    json_data = json.dumps(article_data, ensure_ascii=False)
+    return render_template('level1_detail.html', article_data=Markup(json_data))
 
 @app.route('/level2')
 def level2():
@@ -209,43 +206,46 @@ def delete_comment(comment_id):
 
 @app.route('/level3')
 def level3():
-    # 5번 자바스크립트 검증을 위해 세션에 토큰 저장
-    # (해당 토큰을 level3.html에서 자바스크립트로 fetch 요청 시 전달)
-    session['js_token'] = secrets.token_hex(16)
     return render_template('level3.html')
 
+@app.route('/set_js_enabled', methods=['POST'])
+def set_js_enabled():
+    session['js_enabled'] = True
+    session['user_agent'] = request.headers.get('User-Agent', '')
+    session['ip_address'] = request.remote_addr
+    return jsonify({'status': 'success'})
+
 @app.route('/protected_api/articles')
-def protected_api_articles():
-    """
-    1) User-Agent 검사
-    2) Referer 검사
-    5) 자바스크립트 검증(세션 토큰 확인)
-    """
-    # 1. User-Agent 검사
+def api_protected_articles():
+    # 헤더 검증
     user_agent = request.headers.get('User-Agent', '')
-    # 예시로 python-requests나 curl 등이 포함되어 있으면 차단
-    lower_ua = user_agent.lower()
-    if ("python-requests" in lower_ua) or ("curl" in lower_ua) or not user_agent.strip():
-        return "Forbidden: User-Agent invalid", 403
-
-    # 2. Referer 검사
     referer = request.headers.get('Referer', '')
-    # 예시로 referer에 'level3' 문자열이 없으면 거절
-    # (실제로는 특정 도메인 검증 등을 할 수 있습니다)
-    if "level3" not in referer:
-        return "Forbidden: Referer invalid", 403
+    accept = request.headers.get('Accept', '')
 
-    # 5. 자바스크립트 검증을 위한 세션 토큰 확인
-    # level3.html에서 자바스크립트로 ?token=xxx 형태로 전송한다고 가정
-    client_token = request.args.get('token', '')
-    server_token = session.get('js_token', '')
+    # 1. User-Agent 검증: 일반적인 브라우저의 User-Agent 패턴 확인
+    if not user_agent or "Mozilla" not in user_agent:
+        abort(403, description="허용되지 않은 User-Agent 입니다.")
 
-    if not client_token or (client_token != server_token):
-        return "Forbidden: JS token invalid", 403
+    # JavaScript 실행 여부 확인: 세션 변수 확인 및 추가 정보 검증
+    if not session.get('js_enabled', False):
+        abort(403, description="자바스크립트가 활성화되어 있지 않습니다.")
 
-    # ----- 정상 통과 시 기존 로직 실행 -----
-    page = int(request.args.get('page', 1))
-    pageSize = int(request.args.get('pageSize', 20))
+    # 사용자 에이전트와 IP 주소 검증
+    if session.get('user_agent', '') != user_agent:
+        print(session.get('user_agent', ''), user_agent)
+        abort(403, description="User-Agent 불일치.")
+    
+    if session.get('ip_address', '') != request.remote_addr:
+        abort(403, description="IP 주소 불일치.")
+
+    # 페이지 및 페이지 사이즈 가져오기
+    try:
+        page = int(request.args.get('page', 1))
+        pageSize = int(request.args.get('pageSize', 20))
+    except ValueError:
+        abort(400, description="유효하지 않은 페이지 번호 또는 페이지 사이즈.")
+
+    # 페이지 계산
     offset = (page - 1) * pageSize
     query = RealEstate.query.order_by(RealEstate.id.asc()).offset(offset).limit(pageSize).all()
 
@@ -271,7 +271,9 @@ def protected_api_articles():
             "article_exclusive_space": a.article_exclusive_space,
             "article_exclusive_rate": a.article_exclusive_rate
         })
-    return jsonify(data)
+    json_str = json.dumps(data, ensure_ascii=False)
+    return Response(json_str, content_type='application/json')
+
 
 
 @app.route('/level3/<article_no>')
@@ -300,7 +302,9 @@ def level3_detail(article_no):
         "article_exclusive_rate": article.article_exclusive_rate
     }
 
-    return render_template('level3_detail.html', article_data=article_data)
+    # ensure_ascii=False 옵션을 사용하여 한글이 그대로 나오도록 함
+    json_data = json.dumps(article_data, ensure_ascii=False)
+    return render_template('level1_detail.html', article_data=Markup(json_data))
 
 @app.route('/level4')
 def level4():
