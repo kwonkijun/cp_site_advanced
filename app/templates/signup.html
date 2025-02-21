@@ -1,27 +1,102 @@
 {% extends "main_base.html" %}
 
 {% block content %}
-<div class="signup_container">
-    <div class="signup_form">
-        <h2>회원가입</h2>
+<div class="signup_container d-flex justify-content-center align-items-center">
+    <div class="signup_form card p-4 shadow-lg">
+        <h2 class="text-center mb-4">회원가입</h2>
         <form method="post">
             {{ form.hidden_tag() }}
-            <p>
-                {{ form.username.label }}<br>
-                {{ form.username(size=32) }}
-            </p>
-            <p>
-                {{ form.password.label }}<br>
-                {{ form.password(size=32) }}
-            </p>
-            <p>
-                {{ form.password2.label }}<br>
-                {{ form.password2(size=32) }}
-            </p>
-            <p>{{ form.submit() }}</p>
+
+            <div class="mb-3">
+                <label for="username" class="form-label">{{ form.username.label }}</label>
+                <div class="input-group">
+                    {{ form.username(class="form-control", placeholder="아이디를 입력하세요", id="username") }}
+                    <button type="button" id="checkUsername" class="btn btn-outline-secondary">
+                        <span id="checkText">중복 확인</span>
+                        <span id="spinner" class="spinner-border spinner-border-sm d-none"></span>
+                    </button>
+                </div>
+                <small id="usernameFeedback" class="form-text"></small>
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">{{ form.password.label }}</label>
+                {{ form.password(class="form-control", placeholder="비밀번호를 입력하세요", type="password") }}
+            </div>
+
+            <div class="mb-3">
+                <label for="password2" class="form-label">{{ form.password2.label }}</label>
+                {{ form.password2(class="form-control", placeholder="비밀번호를 다시 입력하세요", type="password") }}
+            </div>
+
+            <div class="mt-3 mb-3">
+                <label for="color" class="form-label">퍼스널 컬러</label>
+                <div class="input-group">
+                    <input type="text" id="color" name="color" class="form-control text-center" value="#000000"
+                        readonly>
+                    <button type="button" id="generateColor" class="btn btn-secondary">🎨 랜덤 색상</button>
+                </div>
+                <div id="colorPreview" class="mt-2 p-2 rounded text-center" style="background-color: #000000;">
+                    <small class="text-white">색상 미리보기</small>
+                </div>
+            </div>
+
+            <div class="d-grid">
+                {{ form.submit(class="btn btn-success btn-lg", id="signupButton", disabled=true) }}
+            </div>
         </form>
-        <p>이미 계정이 있으신가요? <a href="{{ url_for('login') }}">로그인</a></p>
+
+        <p class="text-center mt-3">이미 계정이 있으신가요? <a href="{{ url_for('login') }}">로그인</a></p>
     </div>
 </div>
+
+<script>
+    document.getElementById("generateColor").addEventListener("click", function () {
+        let randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+        document.getElementById("color").value = randomColor;
+        document.getElementById("colorPreview").style.backgroundColor = randomColor;
+        document.getElementById("generateColor").style.backgroundColor = randomColor;
+        document.getElementById("generateColor").style.borderColor = randomColor;
+    });
+
+    document.getElementById("checkUsername").addEventListener("click", function () {
+        let username = document.getElementById("username").value.trim();
+        let feedback = document.getElementById("usernameFeedback");
+        let signupButton = document.getElementById("signupButton");
+        let checkText = document.getElementById("checkText");
+        let spinner = document.getElementById("spinner");
+
+        if (username === "") {
+            feedback.innerHTML = "아이디를 입력하세요.";
+            feedback.style.color = "red";
+            return;
+        }
+
+        checkText.classList.add("d-none");
+        spinner.classList.remove("d-none");
+
+        fetch(`/check_username?username=${username}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.available) {
+                    feedback.innerHTML = "사용 가능한 아이디입니다.";
+                    feedback.style.color = "green";
+                    signupButton.removeAttribute("disabled");
+                } else {
+                    feedback.innerHTML = "이미 사용 중인 아이디입니다.";
+                    feedback.style.color = "red";
+                    signupButton.setAttribute("disabled", "true");
+                }
+            })
+            .catch(error => {
+                feedback.innerHTML = "오류가 발생했습니다. 다시 시도해주세요.";
+                feedback.style.color = "red";
+            })
+            .finally(() => {
+                checkText.classList.remove("d-none");
+                spinner.classList.add("d-none");
+            });
+    });
+</script>
 
 {% endblock %}

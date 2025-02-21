@@ -2,12 +2,13 @@ from . import db, login
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
-import pytz
+from zoneinfo import ZoneInfo
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), unique=True, nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
+    color = db.Column(db.String(7), default="#000000")
     comments = db.relationship('Comment', backref='author', lazy='dynamic')
 
     def set_password(self, password):
@@ -24,7 +25,7 @@ class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    created_at = db.Column(db.DateTime, default=lambda: datetime.now(pytz.timezone('Asia/Seoul')))  # 한국 시간 기준
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(ZoneInfo("Asia/Seoul")))  # 한국 시간 기준
 
 class RealEstate(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)

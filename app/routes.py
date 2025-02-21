@@ -93,13 +93,23 @@ def signup():
         
     form = SignupForm()
     if form.validate_on_submit():
-        user = User(username=form.username.data)
+        color = request.form.get('color', '#000000')  # 기본값 검정색
+        user = User(username=form.username.data, color=color)
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
         flash('회원가입이 완료되었습니다. 로그인 해주세요.', 'success')
         return redirect(url_for('login'))
     return render_template('signup.html', form=form)
+
+@app.route('/check_username')
+def check_username():
+    username = request.args.get('username', '').strip()
+    if not username:
+        return jsonify({"available": False}), 400
+
+    user = User.query.filter_by(username=username).first()
+    return jsonify({"available": user is None})
 
 ## 로그인
 @app.route('/login', methods=['GET', 'POST'])

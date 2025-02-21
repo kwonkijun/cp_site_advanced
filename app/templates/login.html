@@ -1,22 +1,28 @@
 {% extends "main_base.html" %}
 
 {% block content %}
-<div class="login_container">
-    <div class="login_form">
-        <h2>로그인</h2>
+<div class="login_container d-flex justify-content-center align-items-center">
+    <div class="login_form card p-4 shadow-lg">
+        <h2 class="text-center mb-4">로그인</h2>
         <form method="post">
             {{ form.hidden_tag() }}
-            <p>
-                {{ form.username.label }}<br>
-                {{ form.username(size=32) }}
-            </p>
-            <p>
-                {{ form.password.label }}<br>
-                {{ form.password(size=32) }}
-            </p>
-            <p>{{ form.submit() }}</p>
+
+            <div class="mb-3">
+                <label for="username" class="form-label">{{ form.username.label }}</label>
+                {{ form.username(class="form-control", placeholder="아이디를 입력하세요") }}
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">{{ form.password.label }}</label>
+                {{ form.password(class="form-control", placeholder="비밀번호를 입력하세요", type="password") }}
+            </div>
+
+            <div class="d-grid">
+                {{ form.submit(class="btn btn-success btn-lg") }}
+            </div>
         </form>
-        <p>계정이 없으신가요? <a href="{{ url_for('signup') }}">회원가입</a></p>
+
+        <p class="text-center mt-3">계정이 없으신가요? <a href="{{ url_for('signup') }}">회원가입</a></p>
     </div>
 </div>
 {% endblock %}
