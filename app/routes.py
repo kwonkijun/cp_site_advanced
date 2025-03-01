@@ -216,7 +216,18 @@ def delete_comment(comment_id):
 
 @app.route('/level3')
 def level3():
-    return render_template('level3.html')
+    flash("레벨 3은 곧 오픈됩니다!", "info")
+    return redirect(url_for('coming_soon'))  # 오픈 예정 페이지로 이동
+
+@app.route('/level4')
+def level4():
+    flash("레벨 4는 곧 오픈됩니다!", "info")
+    return redirect(url_for('coming_soon'))  # 오픈 예정 페이지로 이동
+
+@app.route('/coming-soon')
+def coming_soon():
+    return render_template('coming_soon.html')
+
 
 @app.route('/set_js_enabled', methods=['POST'])
 def set_js_enabled():
@@ -315,7 +326,3 @@ def level3_detail(article_no):
     # ensure_ascii=False 옵션을 사용하여 한글이 그대로 나오도록 함
     json_data = json.dumps(article_data, ensure_ascii=False)
     return render_template('level1_detail.html', article_data=Markup(json_data))
-
-@app.route('/level4')
-def level4():
-    return render_template('level4.html')
