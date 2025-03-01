@@ -9,7 +9,6 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), unique=True, nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
     color = db.Column(db.String(7), default="#000000")
-    is_admin = db.Column(db.Boolean, default=False)  # 관리자 여부 추가
     comments = db.relationship('Comment', backref='author', lazy='dynamic')
 
     def set_password(self, password):
