@@ -13,8 +13,8 @@
           <p>봇탐지 회피 전략</p>
           <div class="d-flex">
             <a href="#about" class="btn-get-started">Get Started</a>
-            <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8"
-              class="glightbox btn-watch-video d-flex align-items-center"><i class="bi bi-play-circle"></i><span>Watch
+            <a href="https://youtu.be/Uf21RUo3KNc" class="glightbox btn-watch-video d-flex align-items-center"><i
+                class="bi bi-play-circle"></i><span>Watch
                 Video</span></a>
           </div>
         </div>
@@ -74,23 +74,6 @@
     <div id="land-list-container" class="container land_list_container" data-aos="fade-up" data-aos-delay="100"></div>
 
     <script>
-      // JavaScript가 실행되었음을 서버에 알리는 요청
-      fetch('/set_js_enabled', {
-        method: 'POST',
-        credentials: 'same-origin',  // 쿠키를 함께 전송
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({})
-      })
-        .then(res => res.json())
-        .then(data => {
-          console.log('JS enabled:', data.status);
-        })
-        .catch(err => {
-          console.error('Failed to set JS enabled:', err);
-        });
-
       let page = 1;
       let pageSize = 20;
       let loading = false;
@@ -108,12 +91,33 @@
       function loadArticles() {
         if (loading) return;
         loading = true;
+
+        // 헤더 추가
         fetch(`/protected_api/articles?page=${page}&pageSize=${pageSize}`, {
-          credentials: 'same-origin'  // 쿠키를 함께 전송
+          credentials: 'same-origin',
+          headers: {
+            'Accept': 'application/json',
+            'Referer': window.location.href
+          }
         })
           .then(res => {
             if (!res.ok) {
-              throw new Error('봇 탐지에 의해 요청이 거부되었습니다.');
+              // 응답 타입 확인
+              const contentType = res.headers.get('content-type');
+              if (contentType && contentType.includes('application/json')) {
+                return res.json().then(data => {
+                  throw new Error(data.message || '요청이 거부되었습니다.');
+                });
+              } else {
+                return res.text().then(text => {
+                  // HTML이 반환된 경우 에러 메시지 추출 시도
+                  const tempDiv = document.createElement('div');
+                  tempDiv.innerHTML = text;
+                  const errorMessage = tempDiv.querySelector('.error-container p')?.textContent
+                    || '페이지 접근 권한이 없습니다.';
+                  throw new Error(errorMessage);
+                });
+              }
             }
             return res.json();
           })
@@ -125,7 +129,18 @@
             loading = false;
           })
           .catch(err => {
-            console.error(err);
+            console.error('데이터 로딩 실패:', err.message);
+            // 에러 메시지를 사용자에게 표시
+            const container = document.getElementById('land-list-container');
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'alert alert-danger';
+            errorDiv.style.width = '100%';
+            errorDiv.style.textAlign = 'center';
+            errorDiv.innerHTML = `
+              <strong>오류 발생!</strong><br>
+              ${err.message}
+            `;
+            container.appendChild(errorDiv);
             loading = false;
           });
       }
@@ -170,6 +185,63 @@
 
       function getThumbImageUrl(article_no) {
         return "{{ url_for('static', filename='assets/img/land_list') }}" + "/" + article_no + "_thumb.jpg";
+      }
+
+      document.addEventListener('DOMContentLoaded', function () {
+        // 페이지 로드 시 세션 초기화
+        fetch('/level3', {
+          credentials: 'include'  // 쿠키 포함
+        }).then(response => {
+          if (!response.ok) {
+            console.error('세션 초기화 실패');
+          }
+        });
+      });
+
+      document.addEventListener('DOMContentLoaded', function () {
+        // JavaScript 실행 확인
+        fetch('/verify-javascript', {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+          }
+        }).then(response => {
+          if (!response.ok) {
+            console.error('JavaScript 검증 실패');
+          }
+        });
+      });
+
+      // 상세 페이지 요청 처리
+      async function loadArticleDetail(articleNo) {
+        try {
+          const response = await fetch(`/level3/${articleNo}`, {
+            credentials: 'same-origin',
+            headers: {
+              'X-Requested-With': 'XMLHttpRequest'
+            }
+          });
+
+          if (response.status === 401) {
+            // 세션 만료 시 페이지 새로고침
+            window.location.reload();
+            return;
+          }
+
+          if (!response.ok) {
+            throw new Error('상세 정보 로드 실패');
+          }
+
+          // 응답 처리
+          const data = await response.json();
+          // ... 데이터 표시 로직 ...
+
+        } catch (error) {
+          console.error('에러:', error);
+          alert('데이터를 불러오는데 실패했습니다.');
+        }
       }
     </script>
 

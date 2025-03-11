@@ -24,23 +24,23 @@
       <div class="row gy-4">
         <div class="detail_tab col-lg-4">
           <div class="detail-list">
-            <a href="#" class="active">매물정보</a>
+            <!-- 탭 버튼에 id를 부여 -->
+            <a href="#" id="tabItemInfo" class="active">매물정보</a>
             <a href="#">시세/실거래가</a>
             <a href="#">동호수/공시가격</a>
-            <a href="#">부동산정보</a>
+            <a href="#" id="tabRealtorInfo">부동산정보</a>
             <a href="#">사진</a>
           </div>
         </div>
 
-        <div class="detail_box col-lg-8">
+        <!-- 매물정보 -->
+        <div class="detail_box col-lg-8" id="detailBox">
           <div class="img_wrap">
-
             <!-- 기본형 표시 -->
             <div class="floor_plan">
               <span>기본형</span>
               <img id="article_basic_img" src="" alt="">
             </div>
-
             <!-- expandable이 true일 때만 확장형 표시 -->
             <div class="floor_plan" id="expanded_plan_wrap" style="display:none;">
               <span>확장형</span>
@@ -79,25 +79,37 @@
             </tbody>
           </table>
         </div>
+
+        <!-- 부동산정보 -->
+        <div class="realtor_box col-lg-8" id="realtorBox" style="display: none;">
+          <table class="table_wrap table">
+            <tbody>
+              <tr class="table_item_info">
+                <th class="table_th" scope="row">부동산명</th>
+                <td class="table_td" colspan="3" id="article_realtor_name"></td>
+              </tr>
+              <tr class="table_item_info">
+                <th class="table_th" scope="row">부동산주소</th>
+                <td class="table_td" colspan="3" id="article_realtor_address"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </section>
 
   <script>
-    window.__MSS__ = {
-      article: {
-        state: {{ article_data | tojson }}
-    }
-  };
+    window.__PRELOADED_STATE__ = {{ article_data }};
+  </script>
 
+  <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const data = window.__MSS__.article.state;
+      const data = window.__PRELOADED_STATE__;
 
-      // 기본형 이미지는 항상 표시
       const basicImg = document.getElementById('article_basic_img');
       basicImg.src = "{{ url_for('static', filename='assets/img/land_list/') }}" + data.article_no + "_basic.jpg";
 
-      // 확장형 여부
       if (data.article_expandable === true) {
         const expandedWrap = document.getElementById('expanded_plan_wrap');
         expandedWrap.style.display = 'block';
@@ -113,9 +125,31 @@
       document.getElementById('article_floor').textContent = data.article_floor || '';
       document.getElementById('article_direction').textContent = data.article_direction || '';
       document.getElementById('article_detail_desc').textContent = data.article_detail_desc || '';
+
+      const tabItemInfo = document.getElementById('tabItemInfo');
+      const tabRealtorInfo = document.getElementById('tabRealtorInfo');
+      const detailBox = document.getElementById('detailBox');
+      const realtorBox = document.getElementById('realtorBox');
+
+      tabItemInfo.addEventListener('click', (e) => {
+        e.preventDefault();
+        tabItemInfo.classList.add('active');
+        tabRealtorInfo.classList.remove('active');
+        detailBox.style.display = 'block';
+        realtorBox.style.display = 'none';
+      });
+
+      tabRealtorInfo.addEventListener('click', (e) => {
+        e.preventDefault();
+        document.getElementById('article_realtor_name').textContent = data.article_realtor_name || '';
+        document.getElementById('article_realtor_address').textContent = data.article_realtor_address || '';
+        tabRealtorInfo.classList.add('active');
+        tabItemInfo.classList.remove('active');
+        realtorBox.style.display = 'block';
+        detailBox.style.display = 'none';
+      });
     });
   </script>
-
 </main>
 
 {% endblock %}

@@ -3,39 +3,11 @@
 {% block content %}
 <div class="container d-flex flex-column align-items-center justify-content-center vh-100">
     <div class="text-center">
-        <h1 class="display-4 fw-bold text-primary">🚀 오픈 예정! 🚀</h1>
-        <p class="lead text-muted">레벨 3과 레벨 4는 현재 준비 중입니다.</p>
-        <p class="text-muted">더 좋은 강의와 함께 다시 찾아뵙겠습니다! </p>
+        <h1 class="display-4 fw-bold text-primary">🚀 오픈 예정 🚀</h1>
+        <p class="lead text-muted">레벨 4는 현재 준비 중입니다.</p>
+        <p class="text-muted">더 좋은 강의와 함께 다시 찾아뵙겠습니다. </p>
 
         <a href="{{ url_for('index') }}" class="btn btn-outline-primary mt-4">홈으로 돌아가기</a>
     </div>
 </div>
-
-<script>
-    // 오픈 예정 날짜 (예제: 2025년 4월 1일)
-    const openDate = new Date("2025-04-01T00:00:00").getTime();
-
-    function updateCountdown() {
-        const now = new Date().getTime();
-        const timeLeft = openDate - now;
-
-        if (timeLeft <= 0) {
-            document.getElementById("countdown").innerHTML = "✨ 이제 오픈되었습니다! ✨";
-            return;
-        }
-
-        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-
-        document.getElementById("countdown").innerHTML =
-            `⏳ ${days}일 ${hours}시간 ${minutes}분 ${seconds}초 후 오픈!`;
-
-        setTimeout(updateCountdown, 1000);
-    }
-
-    updateCountdown();
-</script>
-
 {% endblock %}
